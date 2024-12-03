@@ -1,0 +1,149 @@
+<div class="container">
+    <h2>Registration Form</h2>
+    <form [formGroup]="registrationForm" (ngSubmit)="onSubmit()">
+        <div formGroupName="personalDetails" class="form-group">
+            <label for="firstName">First Name:</label>
+            <input id="firstName" formControlName="firstName">
+            <div *ngIf=
+                 "registrationForm.get('personalDetails.firstName')?.invalid 
+                  && registrationForm.get('personalDetails.firstName')?.touched"
+                class="error">
+                First Name is required.
+            </div>
+        </div>
+
+        <div formGroupName="personalDetails" class="form-group">
+            <label for="lastName">Last Name:</label>
+            <input id="lastName" formControlName="lastName">
+
+        </div>
+
+        <div formGroupName="personalDetails" class="form-group">
+            <label for="email">Email:</label>
+            <input id="email" formControlName="email">
+            <div *ngIf=
+                 "registrationForm.get('personalDetails.email')?.invalid
+                  && registrationForm.get('personalDetails.email')?.touched"
+                class="error">
+                Please enter a valid email.
+            </div>
+        </div>
+
+        <div formGroupName="address" class="form-group">
+            <label for="street">Street:</label>
+            <input id="street" formControlName="street">
+
+        </div>
+
+        <div formGroupName="address" class="form-group">
+            <label for="city">City:</label>
+            <input id="city" formControlName="city">
+            <div *ngIf="registrationForm.get('address.city')?.invalid 
+                        && registrationForm.get('address.city')?.touched"
+                class="error">
+                City is required.
+            </div>
+        </div>
+
+        <div formGroupName="address" class="form-group">
+            <label for="state">State:</label>
+            <select id="state" formControlName="state">
+                <option value="" disabled>Select a state</option>
+                <option *ngFor=
+                        "let state of states" [value]="state.code">
+                  {{ state.name }}</option>
+            </select>
+            <div *ngIf="registrationForm.get('address.state')?.invalid
+                        && registrationForm.get('address.state')?.touched"
+                class="error">
+                State is required.
+            </div>
+        </div>
+
+        <div formGroupName="address" class="form-group">
+            <label for="zip">Zip Code:</label>
+            <input id="zip" formControlName="zip">
+            <div *ngIf="registrationForm.get('address.zip')?.invalid
+                        && registrationForm.get('address.zip')?.touched"
+                class="error">
+                <div *ngIf=
+                     "registrationForm.get('address.zip')?.errors?.['required']">
+                  Zip Code is required.</div>
+                <div *ngIf=
+                     "registrationForm.get('address.zip')?.errors?.['invalidCharacters']">
+                  Zip Code must contain
+                    only numbers.</div>
+                <div *ngIf=
+                     "registrationForm.get('address.zip')?.errors?.['invalidLength']">
+                  Zip Code must be exactly 6
+                    digits long.</div>
+            </div>
+        </div>
+        <div formGroupName="security" class="form-group">
+            <label for="password">Password:</label>
+            <input id="password" type="password" formControlName="password">
+            <div *ngIf="registrationForm.get('security.password')?.invalid
+                        && registrationForm.get('security.password')?.touched"
+                class="error">
+                Password is required.
+            </div>
+        </div>
+
+        <div formGroupName="security" class="form-group">
+            <label for="confirmPassword">Confirm Password:</label>
+            <input id=
+                   "confirmPassword" type="password" formControlName="confirmPassword">
+            <div *ngIf="registrationForm.get('security.confirmPassword')?.invalid
+                        && registrationForm.get('security.confirmPassword')?.touched"
+                class="error">
+                Confirm Password is required.
+            </div>
+            <div *ngIf="registrationForm.get('security')?.errors?.['passwordMismatch']
+                        && registrationForm.get('security.confirmPassword')?.touched"
+                class="error">
+                Passwords do not match.
+            </div>
+        </div>
+
+        <div formArrayName="skills">
+            <div *ngFor=
+                 "let skill of skills.controls; let i = index" 
+                 [formGroupName]="i" class="skills-section">
+                <div class="form-group">
+                    <label for="skillName">Skill Name:</label>
+                    <input id="skillName" formControlName="skillName">
+                    <div *ngIf=
+                         "skill.get('skillName')?.invalid 
+                          && skill.get('skillName')?.touched" class="error">
+                        Skill Name is required.
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="experience">Experience(In Numbers):</label>
+                    <input id="experience" formControlName="experience">
+                    <div *ngIf=
+                         "skill.get('experience')?.invalid 
+                          && skill.get('experience')?.touched" class="error">
+                        <div *ngIf=
+                             "skill.get('experience')?.errors?.['required']">
+                          Experience is required.</div>
+                        <div *ngIf="skill.get('experience')?.errors?.['pattern']">
+                          Experience must be a number.</div>
+                        <div
+                            *ngIf="skill.get('experience')?.errors?.['min']
+                                   || skill.get('experience')?.errors?.['max']">
+                            Experience should be between 1 and 50.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <button type="button" class="add-skill" (click)="addSkill()">
+              Add Skill</button>
+
+            <button type="submit">Register</button>
+        </div>
+
+    </form>
+</div>
